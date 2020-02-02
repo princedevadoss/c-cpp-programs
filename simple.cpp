@@ -1,3 +1,6 @@
+/*
+sample c++ program to print "hello"
+*/
 #include <iostream>
 
 int main() {
