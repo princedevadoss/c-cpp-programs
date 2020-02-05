@@ -1,3 +1,7 @@
+/*
+recursion program for sum of n numbers
+*/
+
 #include <stdio.h>
 int sum(int ar[], int len) {
     if(len > 0) {
