@@ -1,3 +1,6 @@
+/*
+Practice Program for recusion
+*/
 #include <stdio.h>
 
 int ger(int p[], int len) {
