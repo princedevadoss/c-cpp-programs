@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int ger(int p[]2, int len) {
+int ger(int p[], int len) {
 if(len > 0) {
 return p[len] + ger(p, len-1) + ger(p, len-2);
 }
