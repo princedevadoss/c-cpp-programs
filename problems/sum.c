@@ -1,4 +1,5 @@
-#include<stdio.h>
+/* sample program to find the sum of numbers*/
+#include <stdio.h>
 int main()
 {
 int i,x[7],sum=0;
