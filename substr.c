@@ -12,7 +12,7 @@ int main()
             if(ss[n]==s[m]){
                 if(n==1) {
                     j=1;
-                    break;
+                    break;                                                          
                 }
                 if(m<4){
                     m++;
