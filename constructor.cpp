@@ -1,3 +1,5 @@
+/* sample program to explain constructor */
+
 #include <iostream>
 using namespace std;
 class A{
