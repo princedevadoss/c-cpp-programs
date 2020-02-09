@@ -1,3 +1,6 @@
+/* 
+sample c++ program for datahiding
+*/
 #include <iostream>
 using namespace std;
 
