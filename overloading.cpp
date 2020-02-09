@@ -1,3 +1,6 @@
+/*
+program in c++
+*/
 #include <iostream>
 #include <cstring>
 using namespace std;
