@@ -1,3 +1,6 @@
+/*
+sample c program to explain pointer
+*/
 #include <stdio.h>
 #include <stdlib.h>
 
