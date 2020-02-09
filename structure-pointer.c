@@ -1,3 +1,6 @@
+/*
+sample program to explain structure-pointer
+*/
 #include <stdio.h>
 #include <stdlib.h>
 struct s {
