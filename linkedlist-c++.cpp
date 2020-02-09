@@ -1,3 +1,4 @@
+/*sample c++ program for explaining linked list*/
 #include <iostream>
 using namespace std;
 
