@@ -1,3 +1,4 @@
+/* program to explain complex pointer */
 #include <stdio.h>
 
 int** returner(int *d) {
