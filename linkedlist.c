@@ -1,9 +1,67 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 struct node {
     int data;
     struct node *next; 
 };
+
+void deleteAtPos(struct node *list, int pos) {
+    struct node *temp;
+    for(int i=0; i<pos-2; i++) {
+        list = list->next;
+    }
+    temp = list->next;
+    list->next = list->next->next;
+    free(temp);
+}
+
+void deleteAtLast(struct node *last) {
+    struct node *temp;
+    temp = last->next;
+    last->next = NULL;
+    free(temp);
+}
+struct node* deleteAtFirst(struct node *list) {
+    struct node *temp;
+    temp = list -> next;
+    free(list);
+    return temp;
+}
+
+void findMid(struct node *source, struct node *copy) {
+    if(source->next == NULL) {
+        printf("Operation2 is %d\n", copy->data);
+    } 
+    else if(source->next->next == NULL) {
+        printf("Operation2 is %d\n", copy->data);
+    }
+    else {
+        findMid(source->next->next, copy->next);
+    }
+}
+
+void reverse(struct node *source, struct node *dest) {
+    if(source->next != NULL) {
+        struct node *initial;
+        initial = source;
+        while(source->next->next != NULL) {
+            source = source -> next;
+        }
+        dest->next = source;
+        source->next = NULL;
+        reverse(initial, dest->next);
+    }
+}
+
+int getLength(struct node *curr) {
+    if (curr->next != NULL) {
+        return 1 + getLength(curr->next);
+    }
+    else {
+        return 1;
+    }
+}
 
 struct node* traverseLastNode(struct node *traverseNode) {
     while(traverseNode->next != NULL) {
@@ -34,8 +92,18 @@ struct node* traverse(struct node *traverseNode, int pos) {
     return traverseNode;
 }
 
+void insertAtLast(struct node *src, struct node *pnode) {
+    src = traverseLastNode(src);
+    src->next = pnode;
+}
+
+struct node* insertAtBegining(struct node *p, struct node *pnode) {
+    pnode->next = p;
+    return pnode;
+}
+
 int main() {
-    struct node *p, *q, *pnode, *pnode1, *pnode2, *pnode3;
+    struct node *p, *q, *pnode, *pnode1, *pnode2, *pnode3, *new;
     int n, pos, value;
     scanf("%d", &n);
 
@@ -53,19 +121,13 @@ int main() {
        p=p->next;
     }
 
-    p = q;
-    p = traverseLastNode(p);
-
     //Insertion at begining
     pnode = createNode(60);
+    q = insertAtBegining(q, pnode);
 
-    pnode->next = q;
-    q = pnode;
-
-    //Insertion at end
+    // Insertion at end
     pnode1 = createNode(70);
-
-    p->next = pnode1;
+    insertAtLast(p, pnode1);
 
     //Insertion at given position
     pnode2 = createNode(80);
@@ -83,5 +145,52 @@ int main() {
     p=q;
     printf("\nAfter Inserting\n");
     printNodes(p);
+    p = q;
+
+    new = traverseLastNode(p);
+    reverse(p, new);
+    p=q=new;
+
+    findMid(p, q);
+
+    printf("\nTotal Nodes %d", getLength(p));
+    printf("\nAfter Doing Operation\n");
+    printNodes(p);
+
+    p=q;
+    q = deleteAtFirst(q);
+
+    p=q;
+    printf("\nAfter Deleting at first\n");
+    printNodes(p);
+
+    p=q;
+    while(p->next->next != NULL) {
+        p=p->next;
+    }
+    deleteAtLast(p);
+
+    p=q;
+    scanf("%d", &pos);
+    deleteAtPos(p, pos);
+
+    p=q;
+    printf("\nAfter Deleting at last\n");
+    printNodes(p);
+
+    p=q;
+    int h = getLength(q);
+    if(h%2 == 0) {
+        for(int i=0; i<(h/2)-1; i++) {
+            p = p->next;
+        }
+        printf("\nMid Node is %d\n", p->data);
+    }
+    else {
+        for( int i=0;i<h/2; i++) {
+            p = p -> next;
+        }
+        printf("\nMid Node is %d\n", p->data);
+    }
     return 0;
 }
