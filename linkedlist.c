@@ -6,6 +6,15 @@ struct node {
     struct node *next; 
 };
 
+struct node* findNode(struct node *tr, struct node *find) {
+    if(tr->next != find) {
+        return findNode(tr->next, find);
+    }
+    else {
+        return tr;
+    }
+}
+
 void deleteAtPos(struct node *list, int pos) {
     struct node *temp;
     for(int i=0; i<pos-2; i++) {
@@ -29,19 +38,19 @@ struct node* deleteAtFirst(struct node *list) {
     return temp;
 }
 
-void findMid(struct node *source, struct node *copy) {
+struct node* findMid(struct node *source, struct node *copy) {
     if(source->next == NULL) {
-        printf("Operation2 is %d\n", copy->data);
+        return copy;
     } 
     else if(source->next->next == NULL) {
-        printf("Operation2 is %d\n", copy->data);
+        return copy;
     }
     else {
-        findMid(source->next->next, copy->next);
+        return findMid(source->next->next, copy->next);
     }
 }
 
-void reverse(struct node *source, struct node *dest) {
+struct node* reverse(struct node *source, struct node *dest) {
     if(source->next != NULL) {
         struct node *initial;
         initial = source;
@@ -50,7 +59,10 @@ void reverse(struct node *source, struct node *dest) {
         }
         dest->next = source;
         source->next = NULL;
-        reverse(initial, dest->next);
+        return reverse(initial, dest->next);
+    }
+    else {
+        return source;
     }
 }
 
@@ -103,7 +115,7 @@ struct node* insertAtBegining(struct node *p, struct node *pnode) {
 }
 
 int main() {
-    struct node *p, *q, *pnode, *pnode1, *pnode2, *pnode3, *new;
+    struct node *p, *q, *pnode, *pnode1, *pnode2, *pnode3, *midPrev, *mid, *midNext, *last;
     int n, pos, value;
     scanf("%d", &n);
 
@@ -147,11 +159,22 @@ int main() {
     printNodes(p);
     p = q;
 
-    new = traverseLastNode(p);
-    reverse(p, new);
-    p=q=new;
+    // new = traverseLastNode(p);
+    // reverse(p, new);
+    // p=q=new;
+    
+    last = traverseLastNode(p);
+    mid = findMid(p, q);
+    midPrev = findNode(p, mid);
+    midPrev->next=NULL;
+    midNext = mid->next;
+    p = reverse(p, midPrev);
 
-    findMid(p, q);
+    q = reverse(midNext, last);
+    
+    p->next = mid;
+    mid->next = last;
+    p=q=midPrev;
 
     printf("\nTotal Nodes %d", getLength(p));
     printf("\nAfter Doing Operation\n");
