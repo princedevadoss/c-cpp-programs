@@ -21,6 +21,32 @@ struct node* traverseLastNode(struct node *traverseNode) {
     return traverseNode;
 }
 
+struct node* deleteAtFirst(struct node *p) {
+    struct node *temp;
+    temp = p->next;
+    p -> next -> prev = NULL;
+    p -> next = NULL;
+    free(p);
+    return temp;
+}
+
+void deleteAtMiddle(struct node *p) {
+    struct node *temp;
+    temp = p -> next;
+    p -> next = temp -> next;
+    temp -> next -> prev = p;
+    temp -> next = NULL;
+    temp -> prev = NULL;
+    free(temp);
+}
+
+void deleteAtLast(struct node *p) {
+    struct node *temp;
+    temp = p -> prev;
+    temp -> next = NULL;
+    p -> prev = NULL;
+    free(p);
+}
 struct node* createNode(int data) {
     struct node *temp;
     temp = malloc(sizeof(struct node));
@@ -99,6 +125,19 @@ int main() {
     pnode3 = createNode(80);
     insertAtMiddle(p, pnode3);
 
+    p = q;
+    q = deleteAtFirst(p);
+
+    p = q;
+    p = traverseLastNode(p);
+    deleteAtLast(p);
+
+    p = q;
+    scanf("%d", &pos);
+    p = traverse(p, pos-2);
+    deleteAtMiddle(p);
+
+    printf("\nPrinting Nodes...\n");
     p = q;
     printNodes(p);
 
