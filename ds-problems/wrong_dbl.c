@@ -2,25 +2,9 @@
 #include <stdlib.h>
 #include "dbl_common.h"
 
-struct node* anticlock(struct node *src, struct node *last, int n) {
-    if (n > 0) {
-        struct node* temp;
-        temp = src -> next;
-        temp -> prev = NULL;
-        src->next = NULL;
-        src -> prev = last;
-        src -> prev -> next = src;
-        last = src;
-        return anticlock(temp, last, n-1);
-    }
-    else {
-        return src;
-    }
-}
-
 int main() {
-    struct node *p, *q, *last;
-    int n, value, num;
+    struct node *p, *q, *last, *temp;
+    int n, value;
     scanf("%d", &n);
 
     //Creating first node outside the loop.
@@ -34,14 +18,16 @@ int main() {
     for(int i=1;i<n;i++) {
        scanf("%d", &value);
        p->next = createNode(value);
+       if(i==2) {
+           temp = p;
+       }
        p->next->prev = p;
        p=p->next;
     }
-    p = q;
-    printf("\nEnter the number of rotations in anti clockwise...\n");
-    scanf("%d", &num);
+
+    p=q;
     last = traverseLastNode(p);
-    q = anticlock(p, last, num);
+    temp -> next = last -> prev;
 
     p=q;
     printf("\n Forward...\n");
