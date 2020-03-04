@@ -7,6 +7,28 @@ struct node {
     struct node *prev; 
 };
 
+void checkList(struct node *p) {
+    struct node *t2;
+    int val = 1;
+    t2=p;
+    if(p->prev != NULL) {
+        printf("\nCircular");
+        val=0;
+    }
+    while(val) {
+        t2 = t2 -> next -> next;
+        p = p->next;
+        if(t2 -> next == NULL) {
+            printf("\nDouble linked list");
+            val = 0;
+        }
+        else if(p == t2) {
+            printf("\nSub circular");
+            val = 0;
+        }
+    }
+}
+
 struct node* traverseLastNode(struct node *traverseNode, struct node *q) {
     while(traverseNode->next != q) {
         traverseNode = traverseNode -> next;
@@ -31,10 +53,11 @@ struct node* createNode(int data) {
 }
 
 void printNodes(struct node *p,  struct node *q) {
-    do {
+    int count = 0;
+     while(p != NULL) {
         printf("%d\n", p->data);
         p=p->next;
-    } while(p != q);
+    }
 }
 
 void printCountNodes(struct node *p,  struct node *q, int count) {
@@ -77,18 +100,9 @@ int main() {
        }
     }
 
-    p->next = temp;
-    temp->prev = p;
-
     p=q;
+    checkList(p);
 
-    printf("Forward...\n");
-    printNodes(p, q);
-
-    p=traverseLastNode(p,q);
-
-    printf("Reverse...\n");
-    printNodesReverse(p, q);
 
     return 0;
 }
