@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 struct bst {
     int data;
@@ -55,6 +56,53 @@ void deleteBST(struct bst *node) {
     }
 }
 
+int findNodeLevel1(struct bst *tree, int data, int count) {
+    if(tree!=NULL) {
+        int left = findNodeLevel1(tree->left, data, count + 1);
+        int right = findNodeLevel1(tree->right, data, count + 1);
+        if(tree->data == data) {
+            return count + 1;
+        }
+        else {
+            if(left != 0) {
+                return left;
+            }
+            if(right != 0) {
+                return right;
+            }
+            return 0;
+        }
+    }
+    else {
+        return 0;
+    }
+}
+
+int findMaxlevel(struct bst *tree, int count) {
+    if(tree!=NULL) {
+        int left = findMaxlevel(tree->left, count + 1);
+        int right = findMaxlevel(tree->right, count + 1);
+        if(left > right) {
+            return left;
+        }
+        else {
+            return right;
+        }
+    }
+    else {
+        return count;
+    }
+}
+
+int findNodes(struct bst *tree, int count) {
+    if(tree!=NULL) {
+        return findNodes(tree->left, count + 1) + 1 + findNodes(tree->right, count + 1);
+    }
+    else {
+        return 0;
+    }
+}
+
 int findSibling(struct bst *tree, int data1, int data2) {
     if(tree != NULL) {
         if(findSibling(tree->left, data1, data2) == 0) {
@@ -76,11 +124,15 @@ int findSibling(struct bst *tree, int data1, int data2) {
 
 int findComplete(struct bst *tree) {
     if(tree != NULL) {
-        findComplete(tree->left);
-        if(!((tree->left == NULL && tree -> right == NULL) || (tree->left != NULL && tree -> right != NULL))) {
+        if(findComplete(tree->left) == 1) {
+            if(!((tree->left == NULL && tree -> right == NULL) || (tree->left != NULL && tree -> right != NULL))) {
+                return 0;
+            }
+            return findComplete(tree->right);
+        }
+        else {
             return 0;
         }
-        return findComplete(tree->right);
     }
     else {
         return 1;
@@ -143,9 +195,9 @@ void inOrder(struct bst *tr, int data) {
 }
 
 int main() {
-    int comp, sib;
+    int comp, sib, count, level=1, full = 0, lenn, maxlevel, desired;
     struct bst *tree, *q;
-    int arr[] = {2,8,1,6,9}, len = 5;
+    int arr[] = {8,2, 6,3,9, 11}, len = 6;
     tree = malloc(sizeof(struct bst));
     tree -> data = 5;
     tree -> left = NULL;
@@ -166,6 +218,15 @@ int main() {
     printf("%d\n", sib);
     printf("Bottom nodes\n");
     findBottomNodes(q);
+    lenn = findNodes(q, 0);
+    maxlevel = findMaxlevel(q, 0);
+    printf("Maximum Level %d\n", maxlevel);
+    printf("Total Number of Nodes %d\n", lenn);
+    desired = pow(2, maxlevel) - 1;
+    full = (desired == lenn) ? 1 : 0;
+    printf("Full Binary Tree? %d\n", full);
+    printf("Given Node Level? %d\n", findNodeLevel1(q, 5, 0));
+
     // inOrder(q, 8);
     // printf("After deleting 8\n");
     // printTree(q);
