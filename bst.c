@@ -56,6 +56,15 @@ void deleteBST(struct bst *node) {
     }
 }
 
+int sumOfNodes(struct bst *tree) {
+    if(tree!=NULL) {
+        return tree->data + sumOfNodes(tree->left) + sumOfNodes(tree->right);
+    }
+    else {
+        return 0;
+    }
+}
+
 int findNodeLevel1(struct bst *tree, int data, int count) {
     if(tree!=NULL) {
         int left = findNodeLevel1(tree->left, data, count + 1);
@@ -139,6 +148,24 @@ int findComplete(struct bst *tree) {
     }
 }
 
+struct bst* findGivenNode(struct bst *tree, int data) {
+    if(tree!=NULL) {
+        struct bst* left = findGivenNode(tree->left, data);
+        if(left!=NULL && left->data == data) {
+            return left;
+        }
+        else {
+            if(tree!=NULL && tree->data == data) {
+                return tree;
+            }
+            return findGivenNode(tree->right, data);
+        }
+    }
+    else {
+        return NULL;
+    }
+}
+
 void findBottomNodes(struct bst *tree) {
     if(tree != NULL){
         findBottomNodes(tree->left);
@@ -196,10 +223,10 @@ void inOrder(struct bst *tr, int data) {
 
 int main() {
     int comp, sib, count, level=1, full = 0, lenn, maxlevel, desired;
-    struct bst *tree, *q;
-    int arr[] = {8,2, 6,3,9, 11}, len = 6;
+    struct bst *tree, *q, *find, *find2;
+    int arr[] = {6,7, 5, 4,3,1, 9}, len = 7;
     tree = malloc(sizeof(struct bst));
-    tree -> data = 5;
+    tree -> data = 8;
     tree -> left = NULL;
     tree -> right = NULL;
     tree -> parent = tree;
@@ -226,7 +253,26 @@ int main() {
     full = (desired == lenn) ? 1 : 0;
     printf("Full Binary Tree? %d\n", full);
     printf("Given Node Level? %d\n", findNodeLevel1(q, 5, 0));
-
+    printf("Sum of tree? %d\n", sumOfNodes(q));
+    int leftSum = sumOfNodes(q->left);
+    int rightSum = sumOfNodes(q->right);
+    if(leftSum > rightSum) {
+        printf("left sum is greater %d\n", leftSum);
+    }
+    else {
+        printf("right sum is greater %d\n", rightSum);
+    }
+    int leftcount = findNodes(q->left, 0);
+    int rightcount = findNodes(q->right, 0);
+    if(leftcount > rightcount) {
+        printf("Left edges is %d\n", leftcount);
+    }
+    else {
+        printf("Right edges is %d\n", rightcount);
+    }
+    find = findGivenNode(q, 7);
+    find2 = findGivenNode(q, 5);
+    printf("Given Node %d\n", find->data);
     // inOrder(q, 8);
     // printf("After deleting 8\n");
     // printTree(q);

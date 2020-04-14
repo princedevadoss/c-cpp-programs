@@ -125,17 +125,17 @@ int main() {
     pnode3 = createNode(80);
     insertAtMiddle(p, pnode3);
 
-    p = q;
-    q = deleteAtFirst(p);
+    // p = q;
+    // q = deleteAtFirst(p);
 
-    p = q;
-    p = traverseLastNode(p);
-    deleteAtLast(p);
+    // p = q;
+    // p = traverseLastNode(p);
+    // deleteAtLast(p);
 
-    p = q;
-    scanf("%d", &pos);
-    p = traverse(p, pos-2);
-    deleteAtMiddle(p);
+    // p = q;
+    // scanf("%d", &pos);
+    // p = traverse(p, pos-2);
+    // deleteAtMiddle(p);
 
     printf("\nPrinting Nodes...\n");
     p = q;
