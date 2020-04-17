@@ -71,6 +71,23 @@ int distanceBetweenNodes(struct bst *tree, struct bst *node1, struct bst *node2)
     }
     else if(node1 -> data >= tree -> data && node2 -> data <= tree -> data) {
         return findNodeLevel1(tree, node1->data, 0) + findNodeLevel1(tree, node2->data, 0) - 2;
+int balanceFactor(struct bst *node) {
+    return findMaxlevel(node->left,0) - findMaxlevel(node->right,0);
+}
+
+int treeBalanceFactor(struct bst *tree) {
+    if(tree!=NULL) {
+        int left = treeBalanceFactor(tree->left);
+        if(left == 0) {
+            return 0;
+        }
+        if(balanceFactor(tree) < -1 || balanceFactor(tree) > 1) {
+            return 0;
+        }
+        return treeBalanceFactor(tree->right);
+    }
+    else {
+        return 1;
     }
 }
 
@@ -258,11 +275,11 @@ void inOrder(struct bst *tr, int data) {
 }
 
 int main() {
-    int comp, sib, count, level=1, full = 0, lenn, maxlevel, desired;
+    int comp, sib, count, level=1, full = 0, lenn, maxlevel, desired, balancefactor;
     struct bst *tree, *q, *find, *find2;
-    int arr[] = {1,2,3,4,5,6,7,9,10,12,11,13}, len = 12;
+    int arr[] = {6,12,3,7,11,13,2,4,10,14,1,5}, len = 12;
     tree = malloc(sizeof(struct bst));
-    tree -> data = 8;
+    tree -> data = 9;
     tree -> left = NULL;
     tree -> right = NULL;
     tree -> parent = tree;
@@ -307,9 +324,12 @@ int main() {
         printf("Right edges is %d\n", rightcount);
     }
     find = findGivenNode(q, 5);
-    find2 = findGivenNode(q, 1);
+    find2 = findGivenNode(q, 13);
     printf("Given Node %d\n", find->data);
-    printf("Distance between nodes %d\n", distanceBetweenNodes(q, find, find2));
+    printf("Common Parent %d\n", commonParent(q, find, find2));
+    balancefactor = balanceFactor(find);
+    printf("Balance factor: %d\n", balancefactor);
+    printf("Balance factor of whole tree: %d\n",treeBalanceFactor(q));
     // inOrder(q, 8);
     // printf("After deleting 8\n");
     // printTree(q);
