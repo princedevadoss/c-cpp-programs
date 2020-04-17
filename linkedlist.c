@@ -6,6 +6,22 @@ struct node {
     struct node *next; 
 };
 
+int getCount(struct node *li) {
+    int count = 0;
+    while(li!=NULL) {
+        count++;
+        li = li -> next;
+    }
+    return count;
+}
+
+struct node* getLastPrevNode(struct node* li) {
+    while(li->next->next != NULL) {
+        li = li -> next;
+    }
+    return li;
+}
+
 struct node* findNode(struct node *tr, struct node *find) {
     if(tr->next != find) {
         return findNode(tr->next, find);
@@ -75,6 +91,16 @@ int getLength(struct node *curr) {
     }
 }
 
+void operation2(struct node *curr, struct node *last, int data) {
+    while(curr->next->data != data) {
+        curr = curr -> next;
+    }
+    last -> next = curr -> next;
+    curr -> next = curr -> next -> next;
+    last = last -> next;
+    last -> next = NULL;
+}
+
 struct node* traverseLastNode(struct node *traverseNode) {
     while(traverseNode->next != NULL) {
         traverseNode = traverseNode -> next;
@@ -115,7 +141,7 @@ struct node* insertAtBegining(struct node *p, struct node *pnode) {
 }
 
 int main() {
-    struct node *p, *q, *pnode, *pnode1, *pnode2, *pnode3, *midPrev, *mid, *midNext, *last;
+    struct node *p, *q, *pnode, *pnode1, *pnode2, *pnode3, *midPrev, *mid, *midNext, *last, *lastPrev, *temp;
     int n, pos, value;
     scanf("%d", &n);
 
@@ -159,61 +185,79 @@ int main() {
     printNodes(p);
     p = q;
 
+    printf("Total number of nodes %d\n", getCount(q));
+
+    lastPrev = getLastPrevNode(q);
+    temp = lastPrev -> next;
+    temp -> next = q;
+    lastPrev -> next = NULL;
+    q = temp;
+    
+    p = q;
+    printf("\nAfter Operation\n");
+    printNodes(p);
+
+    
+    last = traverseLastNode(q);
+    operation2(q, last, 80);
+    printf("After doind operation 2\n");
+    printNodes(q);
+
     // new = traverseLastNode(p);
     // reverse(p, new);
     // p=q=new;
     
-    last = traverseLastNode(p);
-    mid = findMid(p, q);
-    midPrev = findNode(p, mid);
-    midPrev->next=NULL;
-    midNext = mid->next;
-    p = reverse(p, midPrev);
+    // last = traverseLastNode(p);
+    // mid = findMid(p, q);
+    // midPrev = findNode(p, mid);
+    // midPrev->next=NULL;
+    // midNext = mid->next;
+    // p = reverse(p, midPrev);
 
-    q = reverse(midNext, last);
+    // q = reverse(midNext, last);
     
-    p->next = mid;
-    mid->next = last;
-    p=q=midPrev;
+    // p->next = mid;
+    // mid->next = last;
+    // p=q=midPrev;
 
-    printf("\nTotal Nodes %d", getLength(p));
-    printf("\nAfter Doing Operation\n");
-    printNodes(p);
+    // printf("\nTotal Nodes %d", getLength(p));
+    // printf("\nAfter Doing Operation\n");
+    // printNodes(p);
 
-    p=q;
-    q = deleteAtFirst(q);
+    // p=q;
+    // q = deleteAtFirst(q);
 
-    p=q;
-    printf("\nAfter Deleting at first\n");
-    printNodes(p);
+    // p=q;
+    // printf("\nAfter Deleting at first\n");
+    // printNodes(p);
 
-    p=q;
-    while(p->next->next != NULL) {
-        p=p->next;
-    }
-    deleteAtLast(p);
+    // p=q;
+    // while(p->next->next != NULL) {
+    //     p=p->next;
+    // }
+    // deleteAtLast(p);
 
-    p=q;
-    scanf("%d", &pos);
-    deleteAtPos(p, pos);
+    // p=q;
+    // scanf("%d", &pos);
+    // deleteAtPos(p, pos);
 
-    p=q;
-    printf("\nAfter Deleting at last\n");
-    printNodes(p);
+    // p=q;
+    // printf("\nAfter Deleting at last\n");
+    // printNodes(p);
 
-    p=q;
-    int h = getLength(q);
-    if(h%2 == 0) {
-        for(int i=0; i<(h/2)-1; i++) {
-            p = p->next;
-        }
-        printf("\nMid Node is %d\n", p->data);
-    }
-    else {
-        for( int i=0;i<h/2; i++) {
-            p = p -> next;
-        }
-        printf("\nMid Node is %d\n", p->data);
-    }
+    // p=q;
+    // int h = getLength(q);
+    // if(h%2 == 0) {
+    //     for(int i=0; i<(h/2)-1; i++) {
+    //         p = p->next;
+    //     }
+    //     printf("\nMid Node is %d\n", p->data);
+    // }
+    // else {
+    //     for( int i=0;i<h/2; i++) {
+    //         p = p -> next;
+    //     }
+    //     printf("\nMid Node is %d\n", p->data);
+    // }
     return 0;
 }

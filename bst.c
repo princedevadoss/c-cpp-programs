@@ -56,12 +56,30 @@ void deleteBST(struct bst *node) {
     }
 }
 
+int distanceBetweenNodes(struct bst *tree, struct bst *node1, struct bst *node2) {
+    if(tree == NULL) {
+        return 0;
+    }
+    else if(node1->data < tree ->data && node2 -> data < tree -> data) {
+        return distanceBetweenNodes(tree->left, node1, node2);
+    }
+    else if(node1->data > tree -> data && node2 -> data > tree -> data) {
+        return distanceBetweenNodes(tree->right, node1, node2);
+    }
+    else if(node1 -> data <= tree -> data && node2 -> data >= tree -> data) {
+        return findNodeLevel1(tree, node1->data, 0) + findNodeLevel1(tree, node2->data, 0) - 2;
+    }
+    else if(node1 -> data >= tree -> data && node2 -> data <= tree -> data) {
+        return findNodeLevel1(tree, node1->data, 0) + findNodeLevel1(tree, node2->data, 0) - 2;
+    }
+}
+
 int commonParent(struct bst *tree, struct bst *node1, struct bst *node2) {
     if(node2 != tree) {
         struct bst *parent1, *parent2;
         parent1 = node1 -> parent;
         parent2 = node2 -> parent;
-        while(parent1 != tree) {
+        while (parent1 != tree) {
             if(parent1 == parent2) {
                 return parent1->data;
             }
@@ -242,7 +260,7 @@ void inOrder(struct bst *tr, int data) {
 int main() {
     int comp, sib, count, level=1, full = 0, lenn, maxlevel, desired;
     struct bst *tree, *q, *find, *find2;
-    int arr[] = {6,7, 5, 4,3,1, 9,2,10,12,11,13}, len = 12;
+    int arr[] = {1,2,3,4,5,6,7,9,10,12,11,13}, len = 12;
     tree = malloc(sizeof(struct bst));
     tree -> data = 8;
     tree -> left = NULL;
@@ -288,10 +306,10 @@ int main() {
     else {
         printf("Right edges is %d\n", rightcount);
     }
-    find = findGivenNode(q, 10);
-    find2 = findGivenNode(q, 13);
+    find = findGivenNode(q, 5);
+    find2 = findGivenNode(q, 1);
     printf("Given Node %d\n", find->data);
-    printf("Common Parent %d\n", commonParent(q, find, find2));
+    printf("Distance between nodes %d\n", distanceBetweenNodes(q, find, find2));
     // inOrder(q, 8);
     // printf("After deleting 8\n");
     // printTree(q);
