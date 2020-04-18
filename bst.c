@@ -8,6 +8,13 @@ struct bst {
     struct bst *parent;
 };
 
+struct treelink {
+    struct bst *data;
+    struct treelink *next;
+};
+
+
+
 void deleteBST(struct bst *node) {
     struct bst *temp;
     if(node->left == NULL && node->right == NULL) {
@@ -75,19 +82,19 @@ int balanceFactor(struct bst *node) {
     return findMaxlevel(node->left,0) - findMaxlevel(node->right,0);
 }
 
-int treeBalanceFactor(struct bst *tree) {
+struct bst* treeBalanceFactor(struct bst *tree) {
     if(tree!=NULL) {
         int left = treeBalanceFactor(tree->left);
-        if(left == 0) {
-            return 0;
+        if(left != NULL) {
+            return left;
         }
         if(balanceFactor(tree) < -1 || balanceFactor(tree) > 1) {
-            return 0;
+            return tree;
         }
         return treeBalanceFactor(tree->right);
     }
     else {
-        return 1;
+        return NULL;
     }
 }
 
@@ -275,9 +282,10 @@ void inOrder(struct bst *tr, int data) {
 }
 
 int main() {
-    int comp, sib, count, level=1, full = 0, lenn, maxlevel, desired, balancefactor;
+    int comp, sib, count, level=1, full = 0, lenn, maxlevel, desired,balancefactor;
     struct bst *tree, *q, *find, *find2;
-    int arr[] = {6,12,3,7,11,13,2,4,10,14,1,5}, len = 12;
+    struct treelink *p,*q;
+    int arr[] = {6,7,12,3,11,13,2,10,14,1}, len = 10;
     tree = malloc(sizeof(struct bst));
     tree -> data = 9;
     tree -> left = NULL;
@@ -323,13 +331,14 @@ int main() {
     else {
         printf("Right edges is %d\n", rightcount);
     }
-    find = findGivenNode(q, 5);
+    find = findGivenNode(q, 6);
     find2 = findGivenNode(q, 13);
     printf("Given Node %d\n", find->data);
     printf("Common Parent %d\n", commonParent(q, find, find2));
     balancefactor = balanceFactor(find);
     printf("Balance factor: %d\n", balancefactor);
-    printf("Balance factor of whole tree: %d\n",treeBalanceFactor(q));
+    for(int i=0;)
+    // printf("Balance factor of whole tree: %d\n",treeBalanceFactor(q)->data);
     // inOrder(q, 8);
     // printf("After deleting 8\n");
     // printTree(q);
