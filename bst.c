@@ -27,29 +27,51 @@ int checkLeaf(struct bst *node) {
 void swapping(struct bst *child, struct bst *parent) {
     if(parent->left == child) {
         child-> right=parent;
-        child->parent=parent->parent;
+        if(parent->parent == parent) {
+	        child->parent = child;
+        }
+        else {
+            child->parent = parent->parent;
+        }
         if(parent->parent->left == parent) {
             child->parent->left=child;
         }
-        else {
+        else if(parent->parent->right==parent){
             child->parent->right = child;
         }
         parent->parent=child;
         parent->left=NULL;
+        // if(child->parent==child) {
+        //     return child;
+        // }
+        // else {
+        //     return NULL;
+        // }
     }
     else
     {
         child-> left=parent;
-        child->parent=parent->parent;
+        if(parent->parent == parent) {
+	        child->parent = child;
+        }
+        else {
+            child->parent = parent->parent;
+        }
         
         if(parent->parent->left == parent) {
             child->parent->left=child;
         }
-        else {
+        else if(parent->parent->right==parent) {
             child->parent->right = child;
         }
         parent->parent=child;
         parent->right=NULL;
+        // if(child->parent==child) {
+        //     return child;
+        // }
+        // else {
+        //     return NULL;
+        // }
     }  
 }
 
@@ -384,6 +406,10 @@ int main() {
         if(checkLeaf(pfind)) {
             printf("%d %d\n", pfind->data, pfind->parent->data);
             swapping(pfind, pfind->parent);
+            if(pfind->parent==q) {
+                q =pfind->parent;
+                printf("%d\n",q->left->data);
+            }
             printf("%d %d\n", pfind->data, pfind->parent->data);
         }
     }
