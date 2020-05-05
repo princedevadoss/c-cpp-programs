@@ -26,30 +26,60 @@ int checkLeaf(struct bst *node) {
 
 void swapping(struct bst *child, struct bst *parent) {
     if(parent->left == child) {
+        parent->left = child->right;
+        if(parent->left!=NULL) {
+        parent->left->parent = parent;
+        }
         child-> right=parent;
-        child->parent=parent->parent;
+        if(parent->parent == parent) {
+	        child->parent = child;
+        }
+        else {
+            child->parent = parent->parent;
+        }
         if(parent->parent->left == parent) {
             child->parent->left=child;
         }
-        else {
+        else if(parent->parent->right==parent){
             child->parent->right = child;
         }
         parent->parent=child;
-        parent->left=NULL;
+        // parent->left=NULL;
+        // if(child->parent==child) {
+        //     return child;
+        // }
+        // else {
+        //     return NULL;
+        // }
     }
     else
     {
+        parent->right = child->left;
+        if(parent->right!=NULL) {
+        parent->right->parent = parent;
+        }
         child-> left=parent;
-        child->parent=parent->parent;
+        if(parent->parent == parent) {
+	        child->parent = child;
+        }
+        else {
+            child->parent = parent->parent;
+        }
         
         if(parent->parent->left == parent) {
             child->parent->left=child;
         }
-        else {
+        else if(parent->parent->right==parent) {
             child->parent->right = child;
         }
         parent->parent=child;
-        parent->right=NULL;
+        // parent->right=NULL;
+        // if(child->parent==child) {
+        //     return child;
+        // }
+        // else {
+        //     return NULL;
+        // }
     }  
 }
 
@@ -320,9 +350,9 @@ void inOrder(struct bst *tr, int data) {
 int main() {
     int comp, sib, count, level=1, full = 0, lenn, maxlevel, desired,balancefactor;
     struct bst *tree, *q, *find, *find2, *pfind;
-    int arr[] = {6,7,3,11,2,1}, len = 6;
+    int arr[] = {5,11,3,8,7,9,6}, len = 7;
     tree = malloc(sizeof(struct bst));
-    tree -> data = 8;
+    tree -> data = 10;
     tree -> left = NULL;
     tree -> right = NULL;
     tree -> parent = tree;
@@ -378,14 +408,18 @@ int main() {
     //     printf("Unbalanced Node : %d\n",(qq->data->data));
     //     qq = qq -> next;
     // }
-    pfind = findChild(findGivenNode(q,8), findGivenNode(q,11));
+    pfind = findChild(findGivenNode(q,3), findGivenNode(q,5));
     if(pfind) {
         printf("checker...%d\n", checkLeaf(pfind));
-        if(checkLeaf(pfind)) {
+        // if(checkLeaf(pfind)) {
             printf("%d %d\n", pfind->data, pfind->parent->data);
             swapping(pfind, pfind->parent);
+            if(pfind->parent==q) {
+                q =pfind->parent;
+                printf("%d\n",q->left->data);
+            }
             printf("%d %d\n", pfind->data, pfind->parent->data);
-        }
+        // }
     }
     else {
         printf("They are not in parent child relationship");
